@@ -219,19 +219,19 @@ export default {
             this.$nextTick(() => this.renderCharts());
         },
         loadChartJs() {
-            if (window.Chart && window.Chart._adapters && window.Chart._adapters._date) return Promise.resolve();
+            if (window.Chart) return Promise.resolve();
             if (_chartJsLoadPromise) return _chartJsLoadPromise;
-            _chartJsLoadPromise = new Promise((resolve, reject) => {
-                const script = document.createElement('script');
+            _chartJsLoadPromise = new Promise(function (resolve, reject) {
+                var script = document.createElement('script');
                 script.src = 'https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js';
-                script.onload = () => {
-                    const adapter = document.createElement('script');
+                script.onload = function () {
+                    var adapter = document.createElement('script');
                     adapter.src = 'https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3/dist/chartjs-adapter-date-fns.bundle.min.js';
                     adapter.onload = resolve;
-                    adapter.onerror = () => { _chartJsLoadPromise = null; reject(new Error('adapter')); };
+                    adapter.onerror = reject;
                     document.head.appendChild(adapter);
                 };
-                script.onerror = () => { _chartJsLoadPromise = null; reject(new Error('chart')); };
+                script.onerror = reject;
                 document.head.appendChild(script);
             });
             return _chartJsLoadPromise;
