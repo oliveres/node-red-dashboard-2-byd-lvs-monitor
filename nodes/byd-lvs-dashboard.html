@@ -1,0 +1,112 @@
+<script type="text/javascript">
+    (function () {
+        RED.nodes.registerType('byd-lvs-dashboard', {
+            category: 'BYD Battery',
+            color: '#4CAF50',
+            defaults: {
+                name: { value: '' },
+                group: { type: 'ui-group', required: true },
+                width: {
+                    value: 12,
+                    validate: function (v) {
+                        const currentGroup = $('#node-input-group').val() || this.group;
+                        const groupNode = RED.nodes.node(currentGroup);
+                        const valid = !groupNode || !v || +v <= +groupNode.width;
+                        $('#node-input-width').toggleClass('input-error', !valid);
+                        return valid;
+                    }
+                },
+                height: { value: 10 },
+                driftHighThreshold: { value: 50 },
+                driftLowThreshold: { value: 50 }
+            },
+            inputs: 1,
+            outputs: 0,
+            icon: 'byd-battery.svg',
+            paletteLabel: 'BYD LVS dashboard',
+            label: function () {
+                return this.name || 'BYD LVS dashboard';
+            },
+            oneditprepare: function () {
+                $('#node-input-size').elementSizer({
+                    width: '#node-input-width',
+                    height: '#node-input-height',
+                    group: '#node-input-group'
+                });
+            }
+        });
+    })();
+</script>
+
+<script type="text/html" data-template-name="byd-lvs-dashboard">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-group"><i class="fa fa-table"></i> Group</label>
+        <input type="text" id="node-input-group">
+    </div>
+    <div class="form-row">
+        <label><i class="fa fa-arrows-alt"></i> Size</label>
+        <button class="editor-button" id="node-input-size">auto</button>
+        <input type="hidden" id="node-input-width">
+        <input type="hidden" id="node-input-height">
+    </div>
+    <div class="form-row">
+        <label for="node-input-driftHighThreshold"><i class="fa fa-arrow-up"></i> Drift High (mV)</label>
+        <input type="number" id="node-input-driftHighThreshold" min="10" max="500" step="10" placeholder="50">
+    </div>
+    <div class="form-row">
+        <label for="node-input-driftLowThreshold"><i class="fa fa-arrow-down"></i> Drift Low (mV)</label>
+        <input type="number" id="node-input-driftLowThreshold" min="10" max="500" step="10" placeholder="50">
+    </div>
+    <div class="form-tips" style="margin-top: 12px;">
+        <p><b>Disclaimer:</b> This software is NOT an official BYD diagnostic tool. It is provided "AS IS" without warranty of any kind.</p>
+        <p>The Ethernet port and its Modbus protocol on the BYD BMU are not documented in the product manual for diagnostic use by end-users or installers. Their availability and open accessibility are purely coincidental and may change with firmware updates without notice. The consequences of frequent or continuous Modbus polling on the BMU are unknown.</p>
+        <p>By using this software, you acknowledge and agree that:</p>
+        <ul>
+            <li>The author assumes NO liability for any damages, loss of warranty, or other consequences whatsoever</li>
+            <li>You waive all claims for compensation arising from its use</li>
+            <li>You accept full responsibility for any decisions made based on information provided by this software</li>
+            <li>Incorrect readings may occur due to register misinterpretation, communication errors, or firmware differences</li>
+        </ul>
+        <p>Data interpretation by this tool (including but not limited to warranty estimates, cycle counts, efficiency calculations, and cell drift analysis) reflects the author's understanding and may not be accurate. Always consult official BYD documentation or an authorized service partner for definitive assessments.</p>
+        <p><b>By your first use of this software, you irrevocably accept all of the above terms.</b></p>
+        <p>BYD and Battery-Box are registered trademarks of BYD Company Limited.</p>
+    </div>
+</script>
+
+<script type="text/html" data-help-name="byd-lvs-dashboard">
+    <p>Dashboard widget for BYD Battery-Box LVS monitoring data.</p>
+
+    <h3>Input</h3>
+    <dl class="message-properties">
+        <dt>payload <span class="property-type">object</span></dt>
+        <dd>Output from the <b>BYD LVS read</b> node (live data).</dd>
+    </dl>
+
+    <h3>Tabs</h3>
+    <ul>
+        <li><b>Overview</b> — SOC gauge, pack voltage, current, temperatures, module table</li>
+        <li><b>Cell Voltages</b> — Heatmap of cell voltages per module</li>
+        <li><b>Graphs</b> — 24-hour rolling history charts (data builds up from live scans, lost on Node-RED restart)</li>
+        <li><b>Temps</b> — Temperature grid per module with min/max highlighting</li>
+        <li><b>Energy Throughput</b> — Charge/discharge energy counters, estimated cycles, warranty status</li>
+        <li><b>Drift Log</b> — Long-term cell voltage drift heatmap (90-day JSONL log on disk)</li>
+        <li><b>Help</b> — Built-in data interpretation guide (EN/CZ/DE)</li>
+    </ul>
+
+    <h3>Setup</h3>
+    <p>Connect the <b>BYD LVS read</b> node output to this node.
+    Live data is displayed immediately. History charts build up automatically
+    from incoming scans (last 24 hours kept in memory).</p>
+
+    <h3>Drift Detection</h3>
+    <p>On each scan, the node computes the median cell voltage per module. If any cell
+    exceeds the median by more than the configured threshold, it is logged as a drift event.
+    Daily peaks are saved to a JSONL file in your Node-RED user directory
+    (<code>byd-drift-log.jsonl</code>), retained for 90 days.</p>
+    <p><b>Drift High (mV)</b> — threshold above the median to flag high drift (default 50 mV).</p>
+    <p><b>Drift Low (mV)</b> — threshold below the median to flag low drift (default 50 mV).</p>
+</script>

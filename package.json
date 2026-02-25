@@ -1,0 +1,62 @@
+{
+    "name": "node-red-dashboard-2-byd-lvs-monitor",
+    "version": "1.1.0",
+    "description": "BYD Battery-Box LVS dashboard widgets for Node-RED Dashboard 2.0",
+    "keywords": [
+        "node-red",
+        "node-red-dashboard-2",
+        "byd",
+        "battery",
+        "lvs",
+        "energy",
+        "solar"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/oliveres/node-red-dashboard-2-byd-lvs-monitor.git"
+    },
+    "author": "oliveres <oldrich.sveda@gmail.com>",
+    "license": "MIT",
+    "files": [
+        "nodes/",
+        "resources/",
+        "examples/",
+        "LICENSE"
+    ],
+    "scripts": {
+        "build": "vite build",
+        "build:dev": "NODE_ENV=development vite build",
+        "dev": "NODE_ENV=development vite build --watch"
+    },
+    "dependencies": {
+        "vue": "^3.3.8",
+        "vuex": "^4.1.0"
+    },
+    "peerDependencies": {
+        "@flowfuse/node-red-dashboard": ">=1.0.0"
+    },
+    "devDependencies": {
+        "@vitejs/plugin-vue": "^4.5.0",
+        "vite": "^5.0.13",
+        "vite-plugin-css-injected-by-js": "^3.3.0",
+        "vite-plugin-static-copy": "^1.0.6"
+    },
+    "engines": {
+        "node": ">=14"
+    },
+    "node-red": {
+        "version": ">=3.0.0",
+        "nodes": {
+            "byd-lvs-dashboard": "nodes/byd-lvs-dashboard.js"
+        }
+    },
+    "node-red-dashboard-2": {
+        "version": "1.0.0",
+        "widgets": {
+            "byd-lvs-dashboard": {
+                "output": "byd-lvs-dashboard.umd.js",
+                "component": "BydLvsDashboard"
+            }
+        }
+    }
+}

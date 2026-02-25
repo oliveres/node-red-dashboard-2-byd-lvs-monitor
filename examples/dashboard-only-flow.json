@@ -1,0 +1,13 @@
+[
+    {"id":"byd-dash-tab","type":"tab","label":"BYD Dashboard","disabled":false,"info":"BYD LVS battery dashboard with live data only (no history charts)."},
+
+    {"id":"byd-dash-inject","type":"inject","z":"byd-dash-tab","name":"Every 30s","props":[],"repeat":"30","crontab":"","once":true,"onceDelay":"5","topic":"","x":150,"y":60,"wires":[["byd-dash-read"]]},
+    {"id":"byd-dash-read","type":"byd-lvs-read","z":"byd-dash-tab","name":"","config":"byd-dash-config","x":340,"y":60,"wires":[["byd-dash-widget"]]},
+    {"id":"byd-dash-widget","type":"byd-lvs-dashboard","z":"byd-dash-tab","name":"","group":"byd-dash-group","width":"0","height":"0","x":560,"y":60,"wires":[]},
+
+    {"id":"byd-dash-config","type":"byd-lvs-config","name":"BMU","host":"192.168.16.254","port":"8080","modules":"0","towers":"1","convertMvToV":false},
+    {"id":"byd-dash-group","type":"ui-group","name":"BYD Battery","page":"byd-dash-page","width":"12","height":"1","order":1,"showTitle":true,"className":"","visible":"true","disabled":"false"},
+    {"id":"byd-dash-page","type":"ui-page","name":"Battery Monitor","ui":"byd-dash-base","path":"/battery","icon":"home","layout":"grid","theme":"byd-dash-theme","breakpoints":[{"name":"Default","px":"0","cols":"3"},{"name":"Tablet","px":"576","cols":"6"},{"name":"Small Desktop","px":"768","cols":"9"},{"name":"Desktop","px":"1024","cols":"12"}],"order":1,"className":"","visible":"true","disabled":"false"},
+    {"id":"byd-dash-base","type":"ui-base","name":"Dashboard","path":"/dashboard","appIcon":"","includeClientData":true,"acceptsClientConfig":["ui-notification","ui-control"],"showPathInSidebar":"","showPageTitle":"","navigationStyle":"default","titleBarStyle":"default"},
+    {"id":"byd-dash-theme","type":"ui-theme","name":"BYD Theme","colors":{"surface":"#0a0d16","primary":"#10B981","bgPage":"#0a0d16","groupBg":"#151B27","groupOutline":"#333944","header":"#12161f"},"sizes":{"pagePadding":"12px","groupGap":"12px","groupBorderRadius":"8px","widgetGap":"12px"}}
+]
