@@ -92,7 +92,7 @@ export default {
         },
         moduleNames() {
             if (!this.history || !this.history.cells) return [];
-            return Object.keys(this.history.cells).sort();
+            return Object.keys(this.history.cells).sort(function (a, b) { return a.localeCompare(b, undefined, { numeric: true }); });
         },
         towerGroups() {
             const names = this.moduleNames;

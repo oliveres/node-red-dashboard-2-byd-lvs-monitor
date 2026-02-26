@@ -124,7 +124,7 @@ export default {
             for (var i = 0; i < this.drift.entries.length; i++) {
                 names[this.drift.entries[i].module] = true;
             }
-            return Object.keys(names).sort();
+            return Object.keys(names).sort(function (a, b) { return a.localeCompare(b, undefined, { numeric: true }); });
         },
         towerGroups() {
             var names = this.moduleNames;

@@ -36,7 +36,7 @@ export default {
         },
         towers() {
             const mods = this.data.modules || {};
-            const entries = Object.keys(mods).sort().map(name => ({ name, mod: mods[name] }));
+            const entries = Object.keys(mods).sort(function (a, b) { return a.localeCompare(b, undefined, { numeric: true }); }).map(name => ({ name, mod: mods[name] }));
             if (this.towerCount <= 1) return [entries];
             const perTower = Math.ceil(entries.length / this.towerCount);
             const result = [];
