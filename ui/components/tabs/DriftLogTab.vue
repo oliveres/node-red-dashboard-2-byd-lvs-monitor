@@ -6,6 +6,7 @@
                     :class="['range-btn', { active: selectedRange === p.value }]"
                     @click="selectRange(p.value)">{{ p.label }}</button>
                 <span v-if="loading" class="loading-text">Loading, please wait...</span>
+                <span v-if="!loading && drift && drift.entries && drift.entries.length > 0 && !heatmapActive" class="heatmap-hint">Not enough drift data for heatmap coloring yet. Colors will appear automatically as data accumulates.</span>
             </div>
         </div>
 
@@ -145,6 +146,9 @@ export default {
         },
         lowDischargedCounts() {
             return this.aggregateCounts('low-discharged');
+        },
+        heatmapActive() {
+            return this.medianCount('high') > 4 || this.medianCount('low-charged') > 4 || this.medianCount('low-discharged') > 4;
         }
     },
     watch: {
@@ -225,10 +229,10 @@ export default {
             var median = this.medianCount(dir);
             if (median <= 4) return 'heat-1'; // not enough data for meaningful relative coloring
             var deviation = (count - median) / median;
-            if (deviation <= 0.10) return 'heat-1';  // at median or ≤10% above
-            if (deviation <= 0.20) return 'heat-2';   // 11-20% above median
-            if (deviation <= 0.40) return 'heat-3';   // 21-40% above median
-            return 'heat-4';                           // >40% above median
+            if (deviation <= 1.00) return 'heat-1';  // up to 2× median
+            if (deviation <= 1.50) return 'heat-2';   // up to 2.5× median
+            if (deviation <= 2.00) return 'heat-3';   // up to 3× median
+            return 'heat-4';                           // more than 3× median
         },
         medianCount(dir) {
             var countsMap = {
@@ -276,6 +280,12 @@ export default {
 .loading-text {
     font-size: 12px;
     color: #f97316;
+    margin-left: 6px;
+}
+
+.heatmap-hint {
+    font-size: 12px;
+    color: #5a6580;
     margin-left: 6px;
 }
 

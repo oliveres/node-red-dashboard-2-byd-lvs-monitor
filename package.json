@@ -1,6 +1,6 @@
 {
     "name": "node-red-dashboard-2-byd-lvs-monitor",
-    "version": "1.1.2",
+    "version": "1.1.4",
     "description": "BYD Battery-Box LVS dashboard widgets for Node-RED Dashboard 2.0",
     "keywords": [
         "node-red",

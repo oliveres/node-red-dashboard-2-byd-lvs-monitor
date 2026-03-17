@@ -175,6 +175,7 @@ export default {
         this._lastAutoRequest = Date.now();
         this._nowTimer = setInterval(() => { this.now = Date.now(); }, 1000);
         this.requestHistory(this.rangeToRequest('1h'));
+        this.loadChartJs().catch(function () {});
         if (this.history && this.history.cells) {
             this.loadChartJs().then(() => this.renderCharts()).catch(() => {
                 this.chartLoadError = true;
@@ -228,10 +229,16 @@ export default {
                     var adapter = document.createElement('script');
                     adapter.src = 'https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3/dist/chartjs-adapter-date-fns.bundle.min.js';
                     adapter.onload = resolve;
-                    adapter.onerror = reject;
+                    adapter.onerror = function () {
+                        _chartJsLoadPromise = null;
+                        reject();
+                    };
                     document.head.appendChild(adapter);
                 };
-                script.onerror = reject;
+                script.onerror = function () {
+                    _chartJsLoadPromise = null;
+                    reject();
+                };
                 document.head.appendChild(script);
             });
             return _chartJsLoadPromise;

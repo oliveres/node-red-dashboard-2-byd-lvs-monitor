@@ -168,10 +168,10 @@ var TRANSLATIONS = {
         ],
 
         driftH: 'Drift Log',
-        driftIntro: 'Tracks cell voltage drift — how much individual cells deviate from the module median voltage. Drift detection runs on every data scan. Only the peak (most extreme) drift per cell per day is recorded.',
+        driftIntro: 'Tracks cell voltage drift — how much individual cells deviate from the module cell voltage median. Drift detection runs on every data scan. Only the peak (most extreme) drift per cell per day is recorded.',
         driftTablesIntro: 'The heatmap displays three separate tables:',
         driftTablesItems: [
-            '<b style="color:' + C.red + '">High Cell Voltage Drift</b> — Cells whose voltage exceeded the module median by more than the configured threshold.',
+            '<b style="color:' + C.red + '">High Cell Voltage Drift</b> — Cells whose voltage exceeded the module cell voltage median by more than the configured threshold.',
             '<b style="color:' + C.cyan + '">Low Cell Voltage Drift (near full charge)</b> — Cells lagging behind others at or near full charge. While all cells are charging, these cells are not reaching the same voltage level as the rest. Repeated occurrences on the same cell may suggest a pattern that warrants closer examination.',
             '<b style="color:' + C.cyan + '">Low Cell Voltage Drift (near full discharge)</b> — Cells with lower voltage than others at or near full discharge. These cells may be depleting faster than the rest of the module.'
         ],
@@ -179,8 +179,8 @@ var TRANSLATIONS = {
         driftReadItems: [
             'Rows = modules, columns = cells 1–16. Values = number of days the drift was detected in the selected range.',
             'Range presets: <b>1d, 7d, 14d, 30d, 90d</b>.',
-            'Colors are <b>relative</b> — based on the median count across all cells for each table independently: ' + clr('green', 'green') + ' = at or near median, ' + clr('yellow', 'yellow') + ' = slightly above, ' + clr('orange', 'orange') + ' = notably above, ' + clr('red', 'red') + ' = significantly above median.',
-            'If total data is sparse (median &le; 4 occurrences), all non-zero cells show in ' + clr('green', 'green') + ' — not enough data for meaningful relative comparison.'
+            'Colors are <b>relative</b> — based on the drift occurrence median (median of non-zero event counts) for each table independently: ' + clr('green', 'green') + ' = up to 2&times; the occurrence median, ' + clr('yellow', 'yellow') + ' = up to 2.5&times;, ' + clr('orange', 'orange') + ' = up to 3&times;, ' + clr('red', 'red') + ' = more than 3&times; the occurrence median.',
+            'If the drift occurrence median is still low (&le; 4), all non-zero cells show in ' + clr('green', 'green') + ' — not enough data for meaningful heatmap coloring. The heatmap activates automatically as data accumulates.'
         ],
         driftMeaningH: 'What drift means',
         driftMeaningItems: [
@@ -194,8 +194,8 @@ var TRANSLATIONS = {
         configTitle: 'Configuration',
         configIntro: 'The dashboard node has two configurable drift thresholds (in the node properties dialog):',
         configItems: [
-            '<b>High drift threshold (mV)</b> — Cell voltage above module median to trigger a high drift record. Default: 50 mV.',
-            '<b>Low drift threshold (mV)</b> — Cell voltage below module median to trigger a low drift record. Default: 50 mV.'
+            '<b>High drift threshold (mV)</b> — Cell voltage above the module cell voltage median to trigger a high drift record. Default: 50 mV.',
+            '<b>Low drift threshold (mV)</b> — Cell voltage below the module cell voltage median to trigger a low drift record. Default: 50 mV.'
         ],
         configOther: 'Other settings (BMU host, port, number of modules, towers, voltage unit) are configured in the <b>BYD LVS config</b> node shared with the read node.',
 
@@ -278,10 +278,10 @@ var TRANSLATIONS = {
         ],
 
         driftH: 'Drift Log (Záznam driftu)',
-        driftIntro: 'Sleduje drift napětí článků — jak moc se jednotlivé články odchylují od mediánu napětí modulu. Detekce driftu probíhá při každém čtení dat. Zaznamenává se pouze špička (nejextrémnější) drift na článek za den.',
+        driftIntro: 'Sleduje drift napětí článků — jak moc se jednotlivé články odchylují od mediánu napětí článků modulu. Detekce driftu probíhá při každém čtení dat. Zaznamenává se pouze špička (nejextrémnější) drift na článek za den.',
         driftTablesIntro: 'Heatmapa zobrazuje tři samostatné tabulky:',
         driftTablesItems: [
-            '<b style="color:' + C.red + '">High Cell Voltage Drift</b> — Články, jejichž napětí překročilo medián modulu o více než nastavený práh.',
+            '<b style="color:' + C.red + '">High Cell Voltage Drift</b> — Články, jejichž napětí překročilo medián napětí článků modulu o více než nastavený práh.',
             '<b style="color:' + C.cyan + '">Low Cell Voltage Drift (near full charge)</b> — Články zaostávající za ostatními při plném nebo téměř plném nabití. Zatímco se všechny články nabíjejí, tyto nedosahují stejné úrovně napětí jako ostatní. Opakovaný výskyt u stejného článku může naznačovat vzorec, který stojí za podrobnější zkoumání.',
             '<b style="color:' + C.cyan + '">Low Cell Voltage Drift (near full discharge)</b> — Články s nižším napětím než ostatní při plném nebo téměř plném vybití. Tyto články se mohou vybíjet rychleji než zbytek modulu.'
         ],
@@ -289,8 +289,8 @@ var TRANSLATIONS = {
         driftReadItems: [
             'Řádky = moduly, sloupce = články 1–16. Hodnoty = počet dní, kdy byl drift detekován ve zvoleném období.',
             'Časové rozsahy: <b>1d, 7d, 14d, 30d, 90d</b>.',
-            'Barvy jsou <b>relativní</b> — založené na mediánu počtů napříč všemi články pro každou tabulku nezávisle: ' + clr('green', 'zelená') + ' = na mediánu nebo blízko, ' + clr('yellow', 'žlutá') + ' = mírně nad, ' + clr('orange', 'oranžová') + ' = výrazně nad, ' + clr('red', 'červená') + ' = významně nad mediánem.',
-            'Pokud jsou data řídká (medián &le; 4 výskyty), všechny nenulové články se zobrazí ' + clr('green', 'zeleně') + ' — nedostatek dat pro smysluplné relativní porovnání.'
+            'Barvy jsou <b>relativní</b> — založené na mediánu výskytů driftu (medián nenulových počtů) pro každou tabulku nezávisle: ' + clr('green', 'zelená') + ' = do 2&times; mediánu výskytů, ' + clr('yellow', 'žlutá') + ' = do 2,5&times;, ' + clr('orange', 'oranžová') + ' = do 3&times;, ' + clr('red', 'červená') + ' = více než 3&times; mediánu výskytů.',
+            'Pokud je medián výskytů driftu stále nízký (&le; 4), všechny nenulové články se zobrazí ' + clr('green', 'zeleně') + ' — nedostatek dat pro smysluplné barvení heatmapy. Heatmapa se aktivuje automaticky s přibývajícími daty.'
         ],
         driftMeaningH: 'Co drift znamená',
         driftMeaningItems: [
@@ -304,8 +304,8 @@ var TRANSLATIONS = {
         configTitle: 'Konfigurace',
         configIntro: 'Dashboard node má dva konfigurovatelné prahy driftu (v dialogu vlastností node):',
         configItems: [
-            '<b>High drift threshold (mV)</b> — Napětí článku nad mediánem modulu pro záznam vysokého driftu. Výchozí: 50 mV.',
-            '<b>Low drift threshold (mV)</b> — Napětí článku pod mediánem modulu pro záznam nízkého driftu. Výchozí: 50 mV.'
+            '<b>High drift threshold (mV)</b> — Napětí článku nad mediánem napětí článků modulu pro záznam vysokého driftu. Výchozí: 50 mV.',
+            '<b>Low drift threshold (mV)</b> — Napětí článku pod mediánem napětí článků modulu pro záznam nízkého driftu. Výchozí: 50 mV.'
         ],
         configOther: 'Ostatní nastavení (BMU host, port, počet modulů, věží, jednotka napětí) se konfigurují v <b>BYD LVS config</b> node sdíleném s read node.',
 
@@ -388,10 +388,10 @@ var TRANSLATIONS = {
         ],
 
         driftH: 'Drift Log (Drift-Protokoll)',
-        driftIntro: 'Verfolgt den Zellspannungsdrift — wie stark einzelne Zellen vom Median der Modulspannung abweichen. Die Drift-Erkennung läuft bei jedem Datenscan. Nur der Peak (extremste) Drift pro Zelle pro Tag wird aufgezeichnet.',
+        driftIntro: 'Verfolgt den Zellspannungsdrift — wie stark einzelne Zellen vom Zellspannungsmedian des Moduls abweichen. Die Drift-Erkennung läuft bei jedem Datenscan. Nur der Peak (extremste) Drift pro Zelle pro Tag wird aufgezeichnet.',
         driftTablesIntro: 'Die Heatmap zeigt drei separate Tabellen:',
         driftTablesItems: [
-            '<b style="color:' + C.red + '">High Cell Voltage Drift</b> — Zellen deren Spannung den Modulmedian um mehr als den konfigurierten Schwellenwert überstieg.',
+            '<b style="color:' + C.red + '">High Cell Voltage Drift</b> — Zellen deren Spannung den Zellspannungsmedian des Moduls um mehr als den konfigurierten Schwellenwert überstieg.',
             '<b style="color:' + C.cyan + '">Low Cell Voltage Drift (near full charge)</b> — Zellen die bei voller oder nahezu voller Ladung hinter den anderen zurückbleiben. Während alle Zellen geladen werden, erreichen diese nicht das gleiche Spannungsniveau wie die übrigen. Wiederholtes Auftreten bei derselben Zelle kann auf ein Muster hinweisen, das eine genauere Untersuchung verdient.',
             '<b style="color:' + C.cyan + '">Low Cell Voltage Drift (near full discharge)</b> — Zellen mit niedrigerer Spannung als andere bei voller oder nahezu voller Entladung. Diese Zellen können sich schneller entladen als der Rest des Moduls.'
         ],
@@ -399,8 +399,8 @@ var TRANSLATIONS = {
         driftReadItems: [
             'Zeilen = Module, Spalten = Zellen 1–16. Werte = Anzahl der Tage, an denen der Drift im gewählten Zeitraum erkannt wurde.',
             'Zeitbereiche: <b>1d, 7d, 14d, 30d, 90d</b>.',
-            'Farben sind <b>relativ</b> — basierend auf dem Median der Zählungen über alle Zellen für jede Tabelle unabhängig: ' + clr('green', 'Grün') + ' = am oder nahe dem Median, ' + clr('yellow', 'Gelb') + ' = leicht darüber, ' + clr('orange', 'Orange') + ' = deutlich darüber, ' + clr('red', 'Rot') + ' = erheblich über dem Median.',
-            'Wenn die Daten spärlich sind (Median &le; 4 Vorkommen), werden alle Nicht-Null-Zellen in ' + clr('green', 'Grün') + ' angezeigt — nicht genug Daten für einen sinnvollen relativen Vergleich.'
+            'Farben sind <b>relativ</b> — basierend auf dem Drift-Vorkommensmedian (Median der Nicht-Null-Zählungen) für jede Tabelle unabhängig: ' + clr('green', 'Grün') + ' = bis 2&times; des Vorkommensmedians, ' + clr('yellow', 'Gelb') + ' = bis 2,5&times;, ' + clr('orange', 'Orange') + ' = bis 3&times;, ' + clr('red', 'Rot') + ' = mehr als 3&times; des Vorkommensmedians.',
+            'Wenn der Drift-Vorkommensmedian noch niedrig ist (&le; 4), werden alle Nicht-Null-Zellen in ' + clr('green', 'Grün') + ' angezeigt — nicht genug Daten für eine sinnvolle Heatmap-Einfärbung. Die Heatmap aktiviert sich automatisch mit zunehmenden Daten.'
         ],
         driftMeaningH: 'Was Drift bedeutet',
         driftMeaningItems: [
@@ -414,8 +414,8 @@ var TRANSLATIONS = {
         configTitle: 'Konfiguration',
         configIntro: 'Der Dashboard-Knoten hat zwei konfigurierbare Drift-Schwellenwerte (im Knoteneigenschaften-Dialog):',
         configItems: [
-            '<b>High drift threshold (mV)</b> — Zellspannung über dem Modulmedian um einen hohen Drift aufzuzeichnen. Standard: 50 mV.',
-            '<b>Low drift threshold (mV)</b> — Zellspannung unter dem Modulmedian um einen niedrigen Drift aufzuzeichnen. Standard: 50 mV.'
+            '<b>High drift threshold (mV)</b> — Zellspannung über dem Zellspannungsmedian des Moduls um einen hohen Drift aufzuzeichnen. Standard: 50 mV.',
+            '<b>Low drift threshold (mV)</b> — Zellspannung unter dem Zellspannungsmedian des Moduls um einen niedrigen Drift aufzuzeichnen. Standard: 50 mV.'
         ],
         configOther: 'Weitere Einstellungen (BMU-Host, Port, Modulanzahl, Türme, Spannungseinheit) werden im <b>BYD LVS config</b>-Knoten konfiguriert, der mit dem Leseknoten geteilt wird.',
 
