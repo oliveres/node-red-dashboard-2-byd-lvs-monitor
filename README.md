@@ -41,6 +41,11 @@ npm install node-red-dashboard-2-byd-lvs-monitor
 
 History charts build up automatically from incoming scans (last 24 hours kept in memory, lost on Node-RED restart).
 
+## Screenshots
+
+<img width="1465" height="893" alt="main" src="https://github.com/user-attachments/assets/eafbe0d0-dbfc-45c9-ac2d-ac8e09318f24" />
+<img width="1466" height="893" alt="high" src="https://github.com/user-attachments/assets/3a7fe4a5-e24b-43f5-a0b1-985fcdc99201" />
+
 ## Compatibility
 
 - Node-RED >= 3.0.0
