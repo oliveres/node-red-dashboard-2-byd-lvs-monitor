@@ -43,7 +43,7 @@ npm install node-red-dashboard-2-byd-lvs-monitor
 | **Cell Voltages** | Color-coded heatmap of all cell voltages per module |
 | **Graphs** | 24-hour rolling history charts with time range presets (30min–24h) |
 | **Temps** | Temperature grid per module with min/max highlighting |
-| **Energy Throughput** | Charge/discharge energy counters, estimated cycles, warranty status |
+| **Energy Throughput** | Charge/discharge energy counters, estimated cycles, estimated warranty status |
 | **Drift Log** | Cell voltage drift heatmap with relative coloring (high drift, low drift near full charge/discharge) |
 | **Help** | Built-in data interpretation guide (EN/CS/DE) |
 
