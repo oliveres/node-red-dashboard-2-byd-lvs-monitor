@@ -2,6 +2,21 @@
 
 Dashboard widget for BYD Battery-Box LVS battery monitoring. Displays live data, cell voltages, temperatures, and historical charts using [Node-RED Dashboard 2.0](https://dashboard.flowfuse.com/).
 
+## Why this exists
+
+VenusOS and VRM show the current min/max cell voltage and which cell 
+triggered the most recent alarm (in the "0103" format — module 1, 
+cell 3). What they don't show is history: was yesterday's alarm the 
+same cell, or a different one? Per BYD, occasional high cell voltage 
+warnings near top-of-charge can be normal LFP behaviour. The useful 
+diagnostic signal is whether the same cell IDs keep showing up, or 
+the alarms scatter randomly across the install.
+
+This tool tracks per-cell drift over time and visualises it as 
+heatmaps, so recurring patterns become visible. It's meant to give 
+you awareness, not to diagnose faults — that's still for BYD's 
+official tools and authorised service partners.
+
 ## Prerequisites
 
 - [Node-RED Dashboard 2.0](https://dashboard.flowfuse.com/) (`@flowfuse/node-red-dashboard`)
@@ -69,6 +84,29 @@ Data interpretation by this tool (including but not limited to warranty estimate
 By your first use of this software, you irrevocably accept all of the above terms.
 
 BYD and Battery-Box are registered trademarks of BYD Company Limited.
+
+## Acknowledgments
+
+This project would not exist without the prior reverse-engineering work
+done by the Home Assistant and IoT communities. The Modbus register map
+and protocol decoding builds on:
+
+- **[sarnau/BYD-Battery-Box-Infos](https://github.com/sarnau/BYD-Battery-Box-Infos)** —
+  the foundational reference documenting BYD Battery-Box internals, including
+  the BMU Modbus protocol over TCP.
+- **[redpomodoro/byd_battery_box](https://github.com/redpomodoro/byd_battery_box)** —
+  Home Assistant integration that demonstrated practical decoding of cell-level
+  data from the BMU.
+- **[christianh17/ioBroker.bydhvs](https://github.com/christianh17/ioBroker.bydhvs)** —
+  ioBroker adapter with additional register interpretations and cross-checks.
+
+This package ports those findings to Node-RED, fixes several decoding issues
+encountered along the way, and adds historical drift tracking, SOH and cycle
+estimation, warranty utilisation tracking, and the SOC warranty timer that
+weren't part of the prior projects.
+
+If you find this useful, consider also starring the projects above —
+they did the hard work of figuring out the protocol in the first place.
 
 ## License
 
